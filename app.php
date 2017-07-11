@@ -14,8 +14,18 @@ foreach ($config->products as $product) {
 }
 $checkout = new Checkout();
 
-$checkout->scan($productObjArray['mbp']);
-$checkout->scan($productObjArray['vga']);
-$checkout->scan($productObjArray['ipd']);
+$line = '';
+do{
+echo "Enter product SKU [mbp, vga, ipd]\nEnter product SKU or checkout to end: ";
+$handle = fopen ("php://stdin","r");
+$line = trim(fgets($handle));
+if($line == 'checkout'){
+    echo "Total Price:". $checkout->total()."\n";
+    exit;
+}
+$checkout->scan($productObjArray[$line]);
+}while($line = 'yes');
+echo "\n";
+echo "Thank you, continuing...\n";
 
-echo $checkout->total();
+
